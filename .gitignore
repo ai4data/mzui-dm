@@ -47,7 +47,11 @@ env/
 
 # Environment variables
 .env
+.env.local
+.env.supabase
+.env.supabase2
 !.env.example
+!.env.supabase.example
 
 # Test files
 test_*.py

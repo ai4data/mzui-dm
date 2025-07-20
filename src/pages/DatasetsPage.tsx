@@ -69,7 +69,7 @@ export function DatasetsPage() {
         setLoading(true)
         setCurrentPage(1) // Reset to page 1 when filters change
         
-        const response = await getDatasets(1, 20, searchQuery || undefined, businessLineFilter || undefined)
+        const response = await getDatasets(1, 10, searchQuery || undefined, businessLineFilter || undefined)
         setDatasets(response.datasets)
         
         // Store pagination info

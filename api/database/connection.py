@@ -34,6 +34,9 @@ DATABASE_URL = get_database_url()
 engine_kwargs = {
     "pool_pre_ping": True,  # Verify connections before use
     "pool_recycle": 300,    # Recycle connections every 5 minutes
+    "pool_size": 5,         # Smaller pool for Supabase free tier
+    "max_overflow": 0,      # No overflow connections
+    "pool_timeout": 30,     # Timeout after 30 seconds
 }
 
 # Add SSL requirement for cloud databases (like Supabase)
