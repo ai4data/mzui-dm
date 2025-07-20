@@ -6,20 +6,43 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Database configuration
-DB_CONFIG = {
-    "host": os.getenv("DB_HOST", "localhost"),
-    "database": os.getenv("DB_NAME", "data_marketplace"),
-    "user": os.getenv("DB_USER", "postgres"),
-    "password": os.getenv("DB_PASSWORD", "dejonoxi03!POS"),
-    "port": int(os.getenv("DB_PORT", 5432)),
+def get_database_url():
+    """
+    Get database URL, supporting both direct connection and connection string.
+    Prioritizes DATABASE_URL if provided (useful for Supabase and other cloud providers).
+    """
+    # Check if full DATABASE_URL is provided (common for cloud providers like Supabase)
+    database_url = os.getenv("DATABASE_URL")
+    if database_url:
+        return database_url
+    
+    # Fallback to individual connection parameters
+    DB_CONFIG = {
+        "host": os.getenv("DB_HOST", "localhost"),
+        "database": os.getenv("DB_NAME", "data_marketplace"),
+        "user": os.getenv("DB_USER", "postgres"),
+        "password": os.getenv("DB_PASSWORD", ""),
+        "port": int(os.getenv("DB_PORT", 5432)),
+    }
+    
+    return f"postgresql://{DB_CONFIG['user']}:{DB_CONFIG['password']}@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}"
+
+# Get database URL
+DATABASE_URL = get_database_url()
+
+# Create SQLAlchemy engine with Supabase-friendly settings
+engine_kwargs = {
+    "pool_pre_ping": True,  # Verify connections before use
+    "pool_recycle": 300,    # Recycle connections every 5 minutes
 }
 
-# Create database URL
-DATABASE_URL = f"postgresql://{DB_CONFIG['user']}:{DB_CONFIG['password']}@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}"
+# Add SSL requirement for cloud databases (like Supabase)
+if "supabase.co" in DATABASE_URL or os.getenv("DB_HOST", "").endswith("supabase.co"):
+    engine_kwargs["connect_args"] = {"sslmode": "require"}
 
-# Create SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+print(f"🔗 Connecting to database: {DATABASE_URL.split('@')[1] if '@' in DATABASE_URL else 'local database'}")
+
+engine = create_engine(DATABASE_URL, **engine_kwargs)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Database dependency for FastAPI
