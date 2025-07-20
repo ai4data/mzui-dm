@@ -1,0 +1,5 @@
+/* Override sidebar width to make it wider */
+:root {
+  --sidebar-width: 20rem !important; /* Increase from default 16rem */
+  --sidebar-width-mobile: 22rem !important; /* Increase from default 18rem */
+}

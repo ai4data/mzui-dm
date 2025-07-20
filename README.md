@@ -1,81 +1,80 @@
-# Vite React Shadcn Demo
+# MZUI Data Marketplace
 
-Vite React Shadcn Demo is a React-based application built with Vite, TypeScript, ShadCN UI, and Tailwind CSS.
+A modern data marketplace application built with React, TypeScript, and FastAPI.
 
-## Prerequisites
+## Features
 
-Before you begin, ensure you have the following installed on your system:
+- Browse and search datasets by business domains
+- View dataset details, quality scores, and metadata
+- Filter datasets by business lines and categories
+- Responsive design with dark/light theme support
+- RESTful API backend with PostgreSQL database
 
-- Node.js (version 14 or higher)
-- npm (usually comes with Node.js)
+## Tech Stack
 
-## Installation
+### Frontend
+- React 18 with TypeScript
+- Vite for build tooling
+- Tailwind CSS for styling
+- shadcn/ui component library
+- React Router for navigation
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/VoloBuilds/vite-react-shadcn-demo.git
-   cd vite-react-shadcn-demo
-   ```
+### Backend
+- FastAPI (Python)
+- PostgreSQL database
+- SQLAlchemy for database operations
+- Uvicorn ASGI server
 
-2. Install the dependencies:
-   ```
-   npm install
-   ```
+## Quick Start
 
-## Running the Application
+### Prerequisites
+- Node.js 18+ and npm
+- Python 3.8+
+- PostgreSQL database
 
-To start the development server:
+### Frontend Setup
+```bash
+# Install dependencies
+npm install
 
-```
+# Start development server
 npm run dev
 ```
 
-This will start the Vite development server. Open your browser and navigate to `http://localhost:5173` to view the application.
+### Backend Setup
+```bash
+# Navigate to API directory
+cd api
 
-## Building for Production
+# Create virtual environment
+python -m venv .venv
 
-To build the application for production:
+# Activate virtual environment
+# Windows:
+.\.venv\Scripts\Activate.ps1
+# Linux/Mac:
+source .venv/bin/activate
 
+# Install dependencies
+pip install -r requirements.txt
+
+# Copy environment template and configure
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Start API server
+python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
-npm run build
-```
 
+### Database Setup
+Ensure your PostgreSQL database is running and accessible with the credentials specified in your `.env` file.
 
+## Development
 
-This will create a `dist` folder with the production-ready files.
+The application runs on:
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000
 
-## Additional Scripts
+## License
 
-- `npm run lint`: Run ESLint to check for code quality and style issues.
-- `npm run preview`: Preview the production build locally.
-
-## Project Structure
-
-The main application code is located in the `src` directory:
-
-- `src/App.tsx`: The main application component
-- `src/components/`: Reusable React components
-- `src/lib/`: Utility functions and helpers
-- `src/index.css`: Global styles and Tailwind CSS imports
-
-## Technologies Used
-
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- shadcn/ui components
-
-## Configuration Files
-
-- `tsconfig.json`: TypeScript configuration
-- `tailwind.config.js`: Tailwind CSS configuration
-- `vite.config.ts`: Vite configuration
-- `eslint.config.js`: ESLint configuration
-
-For more details on the project setup and configuration, refer to the respective configuration files in the project root.
-
-If starting a project from scratch, see this guide on how to use shadcn/ui with vite here: https://ui.shadcn.com/docs/installation/vite
-
-Also see the Cursor tutorial relating to this project here:
-https://youtu.be/PlQPSkIUdIk
+This project is licensed under the MIT License - see the LICENSE file for details.
