@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -30,6 +31,7 @@ async function getDatasets(page: number = 1, limit: number = 20, search?: string
 }
 
 export function DatasetsPage() {
+  const navigate = useNavigate()
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid')
   const [searchQuery, setSearchQuery] = useState('')
   const [datasets, setDatasets] = useState<Dataset[]>([])
@@ -128,8 +130,8 @@ export function DatasetsPage() {
   const filteredDatasets = datasets
 
   const handleDatasetSelect = (dataset: Dataset) => {
-    console.log('Selected dataset:', dataset)
-    // TODO: Navigate to dataset detail page
+    // Navigate to dataset detail page with DatasetOverview
+    navigate(`/datasets/${dataset.id}`)
   }
 
   const handleBookmark = (datasetId: string) => {

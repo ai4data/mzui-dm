@@ -3,9 +3,18 @@ import { useParams, useNavigate } from "react-router-dom"
 
 import { DatasetHeader } from "@/components/DatasetHeader"
 import { DatasetTabs } from "@/components/DatasetTabs"
+import { DatasetOverview } from "@/components/DatasetOverview"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dataset } from "@/types"
-import { getDatasetById } from "@/services/datasetService"
+
+// Updated API service function to fetch from our real API
+async function getDatasetById(id: string): Promise<Dataset> {
+  const response = await fetch(`http://localhost:8000/api/datasets/${id}`)
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+  return response.json()
+}
 
 export function DatasetDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -114,7 +123,10 @@ export function DatasetDetailPage() {
         isBookmarked={isBookmarked}
       />
       
-      {/* Dataset Tabs with Overview, Preview, Visualization, etc. */}
+      {/* Dataset Overview with comprehensive information and charts */}
+      <DatasetOverview dataset={dataset} />
+      
+      {/* Dataset Tabs with additional details, Preview, Visualization, etc. */}
       <DatasetTabs dataset={dataset} />
     </div>
   )
