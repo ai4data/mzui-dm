@@ -162,11 +162,7 @@ export function DatasetGrid({
       )}
 
       {/* Results Count */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          Showing {filteredAndSortedDatasets.length} of {datasets.length} datasets
-        </p>
-      </div>
+      {/* Dataset count removed - now shown in parent DatasetsPage component */}
 
       {/* Dataset Grid/List */}
       {loading ? (

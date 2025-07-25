@@ -39,6 +39,7 @@ export function DatasetsPage() {
   const [totalPages, setTotalPages] = useState(1)
   const [hasMore, setHasMore] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false)
+  const [totalCount, setTotalCount] = useState(0)
 
   // Get URL parameters and listen for changes
   const [businessLineFilter, setBusinessLineFilter] = useState<string | null>(null)
@@ -68,6 +69,7 @@ export function DatasetsPage() {
       try {
         setLoading(true)
         setCurrentPage(1) // Reset to page 1 when filters change
+        setTotalCount(0) // Reset total count immediately when filters change
         
         const response = await getDatasets(1, 10, searchQuery || undefined, businessLineFilter || undefined)
         setDatasets(response.datasets)
@@ -76,9 +78,11 @@ export function DatasetsPage() {
         if (response.pagination) {
           setTotalPages(response.pagination.pages || 1)
           setHasMore(response.pagination.page < response.pagination.pages)
+          setTotalCount(response.pagination.total || 0)
         }
       } catch (error) {
         console.error('Failed to load datasets:', error)
+        setTotalCount(0) // Reset on error too
       } finally {
         setLoading(false)
       }
@@ -185,7 +189,11 @@ export function DatasetsPage() {
       {/* View Toggle */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          {loading ? 'Loading...' : `Showing ${filteredDatasets.length} of ${datasets.length} datasets`}
+          {loading ? 'Loading...' : 
+            businessLineFilter ? 
+              `Showing ${filteredDatasets.length} of ${totalCount} ${businessLineFilter} datasets` :
+              `Showing ${filteredDatasets.length} of ${totalCount} total datasets`
+          }
         </p>
         
         <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as 'grid' | 'table')}>

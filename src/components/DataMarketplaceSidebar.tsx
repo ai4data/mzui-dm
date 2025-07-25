@@ -105,7 +105,7 @@ const dataDomains = [
     name: "Innovation & Technology",
     icon: Database,
     count: 223,
-    url: "/datasets?business_line=Innovation & Technology",
+    url: "/datasets?business_line=Innovation%20%26%20Technology",
   },
   {
     name: "Leasing",

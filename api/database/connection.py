@@ -32,11 +32,12 @@ DATABASE_URL = get_database_url()
 
 # Create SQLAlchemy engine with Supabase-friendly settings
 engine_kwargs = {
-    "pool_pre_ping": True,  # Verify connections before use
-    "pool_recycle": 300,    # Recycle connections every 5 minutes
-    "pool_size": 5,         # Smaller pool for Supabase free tier
-    "max_overflow": 0,      # No overflow connections
-    "pool_timeout": 30,     # Timeout after 30 seconds
+    "pool_pre_ping": False,  # Skip ping to reduce latency
+    "pool_recycle": 3600,    # Longer recycle time
+    "pool_size": 1,          # Single connection for simplicity
+    "max_overflow": 0,       # No overflow
+    "pool_timeout": 10,      # Shorter timeout
+    "echo": False,           # Disable SQL logging
 }
 
 # Add SSL requirement for cloud databases (like Supabase)
