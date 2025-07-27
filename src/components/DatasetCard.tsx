@@ -33,6 +33,7 @@ import {
 import { Dataset } from "@/types"
 import { formatDate, formatNumber } from "@/lib/dataTransforms"
 import { getClassificationColor, getQualityScoreColor } from "@/lib/dataTransforms"
+import { DatasetActions } from "./DatasetActions"
 
 interface DatasetCardProps {
   dataset: Dataset
@@ -247,37 +248,10 @@ export function DatasetCard({
             </Tooltip>
           </div>
 
-          {/* Action Buttons */}
+          {/* Marketplace Action Buttons */}
           {showActions && !compact && (
-            <div className="flex items-center gap-2 mt-3 w-full">
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex-1"
-                onClick={handleCardClick}
-              >
-                <Eye className="mr-2 h-4 w-4" />
-                View
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleBookmarkClick}
-                className={isBookmarked ? 'text-yellow-600' : ''}
-              >
-                {isBookmarked ? (
-                  <BookmarkCheck className="h-4 w-4" />
-                ) : (
-                  <Bookmark className="h-4 w-4" />
-                )}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleDownloadClick}
-              >
-                <Download className="h-4 w-4" />
-              </Button>
+            <div className="mt-3 w-full" onClick={(e) => e.stopPropagation()}>
+              <DatasetActions dataset={dataset} variant="compact" />
             </div>
           )}
         </CardFooter>

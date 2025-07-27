@@ -1,15 +1,15 @@
-import { 
-  Calendar, 
-  Clock, 
-  Database, 
-  FileText, 
-  Globe, 
-  HardDrive, 
-  Info, 
-  Lock, 
-  Shield, 
-  Tag, 
-  User, 
+import {
+  Calendar,
+  Clock,
+  Database,
+  FileText,
+  Globe,
+  HardDrive,
+  Info,
+  Lock,
+  Shield,
+  Tag,
+  User,
   Users,
   CheckCircle2,
   AlertTriangle,
@@ -274,23 +274,23 @@ export function DatasetMetadata({ dataset }: DatasetMetadataProps) {
               <Progress value={dataset.metrics.qualityScore} className="h-2" />
             </div>
 
-            {/* Quality Score */}
+            {/* Completeness */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span className="text-sm text-muted-foreground flex items-center">
-                      Quality Score
+                      Completeness
                       <Info className="h-3 w-3 ml-1" />
                     </span>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Overall data quality score from database metrics</p>
+                    <p>Percentage of required fields that contain valid data</p>
                   </TooltipContent>
                 </Tooltip>
-                <span className="text-sm">{dataset.metrics.qualityScore}%</span>
+                <span className="text-sm">{dataset.metrics.completeness}%</span>
               </div>
-              <Progress value={dataset.metrics.qualityScore} className="h-1.5" />
+              <Progress value={dataset.metrics.completeness} className="h-1.5" />
             </div>
 
             {/* Accuracy */}
@@ -413,7 +413,7 @@ export function DatasetMetadata({ dataset }: DatasetMetadataProps) {
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">Lifecycle Status</span>
               </div>
-              <Badge 
+              <Badge
                 variant={dataset.dataLifecycle === 'Active' ? 'default' : 'destructive'}
                 className={dataset.dataLifecycle === 'Deprecated' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100 hover:bg-orange-100/80 dark:hover:bg-orange-900/80' : ''}
               >

@@ -32,7 +32,9 @@ async def get_datasets(
         dm.usage_count,
         d.updated_at,
         d.data_expert,
-        d.data_validator
+        d.data_validator,
+        d.source_sys_id,
+        d.source_sys_name
     FROM datasets d
     LEFT JOIN dataset_metrics dm ON d.id = dm.dataset_id
     WHERE 1=1
@@ -75,6 +77,8 @@ async def get_datasets(
                 "dataDomain": row[4],
                 "maturity": row[5],
                 "updatedAt": row[9].isoformat() if row[9] else None,
+                "sourceSysId": row[12],
+                "sourceSysName": row[13],
                 "metrics": {
                     "qualityScore": row[6] if row[6] is not None else 0,
                     "averageRating": row[7] if row[7] is not None else 0,
@@ -131,7 +135,7 @@ async def get_dataset_detail(dataset_id: str, db: Session = Depends(get_db)):
             id, technical_id, name, description, business_line, business_entity,
             maturity, data_lifecycle, location, data_domain, data_subdomain,
             data_expert, data_validator, data_classification,
-            created_at, updated_at
+            created_at, updated_at, source_sys_id, source_sys_name
         FROM datasets 
         WHERE id = :dataset_id
         """
@@ -277,6 +281,8 @@ async def get_dataset_detail(dataset_id: str, db: Session = Depends(get_db)):
             "dataClassification": row[13],
             "createdAt": row[14].isoformat() if row[14] else None,
             "updatedAt": row[15].isoformat() if row[15] else None,
+            "sourceSysId": row[16],
+            "sourceSysName": row[17],
             "dataOwner": data_owner,
             "dataSteward": data_steward,
             "tags": tags,

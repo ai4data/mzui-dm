@@ -22,6 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/contexts/AuthContext"
 import { useNavigate } from "react-router-dom"
+import { CartButton } from "./CartButton"
 
 interface BreadcrumbItem {
   label: string
@@ -101,6 +102,9 @@ export function DataMarketplaceHeader({
 
         {/* Right Side Actions */}
         <div className="flex items-center gap-2">
+          {/* Cart Button */}
+          <CartButton />
+
           {/* Theme Toggle */}
           <Button variant="ghost" size="icon" onClick={onThemeToggle}>
             {theme === "dark" ? (

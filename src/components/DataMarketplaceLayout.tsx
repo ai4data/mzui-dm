@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { DataMarketplaceSidebar } from "./DataMarketplaceSidebar"
 import { DataMarketplaceHeader } from "./DataMarketplaceHeader"
+import { DatasetCart } from "./DatasetCart"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { useAuth } from "@/contexts/AuthContext"
 
@@ -83,6 +84,9 @@ export function DataMarketplaceLayout({ breadcrumbs, user }: DataMarketplaceLayo
             <Outlet />
           </main>
         </div>
+        
+        {/* Shopping Cart */}
+        <DatasetCart />
       </SidebarInset>
     </SidebarProvider>
   )

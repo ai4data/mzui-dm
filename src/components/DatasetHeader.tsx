@@ -35,6 +35,7 @@ import {
 
 import { Dataset } from "@/types"
 import { formatDate, formatNumber, getClassificationColor, getQualityScoreColor } from "@/lib/dataTransforms"
+import { DatasetActions } from "./DatasetActions"
 
 interface DatasetHeaderProps {
   dataset: Dataset
@@ -128,7 +129,11 @@ export function DatasetHeader({
                   <p className="text-muted-foreground mt-1">{dataset.description}</p>
                 </div>
                 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
+                  {/* Marketplace Actions */}
+                  <DatasetActions dataset={dataset} />
+                  
+                  {/* Additional Actions */}
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -143,21 +148,6 @@ export function DatasetHeader({
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>{isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}</p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={handleDownloadClick}
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Download dataset</p>
                       </TooltipContent>
                     </Tooltip>
 

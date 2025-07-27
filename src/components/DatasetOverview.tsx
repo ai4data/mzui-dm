@@ -177,19 +177,19 @@ export function DatasetOverview({ dataset }: DatasetOverviewProps) {
             </div>
           </div>
 
-          {/* Quality Score */}
+          {/* Completeness */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Info className="h-3 w-3 text-muted-foreground" />
-                <span className="text-sm font-medium">Quality Score</span>
+                <span className="text-sm font-medium">Completeness</span>
               </div>
-              <span className="text-sm font-semibold">{metrics.qualityScore}%</span>
+              <span className="text-sm font-semibold">{metrics.completeness}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
                 className="h-2 rounded-full bg-purple-500 transition-all duration-1000 ease-out"
-                style={{ width: `${metrics.qualityScore}%` }}
+                style={{ width: `${metrics.completeness}%` }}
               ></div>
             </div>
           </div>
