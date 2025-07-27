@@ -190,7 +190,8 @@ export function DatasetCard({
         </CardContent>
 
         <CardFooter className={`pt-0 ${compact ? 'pb-3' : 'pb-4'}`}>
-          <div className="flex items-center justify-between w-full text-sm text-muted-foreground">
+          {/* Stats Row */}
+          <div className="flex items-center justify-between w-full text-sm text-muted-foreground mb-3">
             <div className="flex items-center space-x-4">
               {/* Usage Stats */}
               <Tooltip>
@@ -248,9 +249,9 @@ export function DatasetCard({
             </Tooltip>
           </div>
 
-          {/* Marketplace Action Buttons */}
+          {/* Marketplace Action Buttons - Full Width Row */}
           {showActions && !compact && (
-            <div className="mt-3 w-full" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-end w-full" onClick={(e) => e.stopPropagation()}>
               <DatasetActions dataset={dataset} variant="compact" />
             </div>
           )}
