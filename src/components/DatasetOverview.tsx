@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { 
   TrendingUp, 
   Star, 
@@ -19,6 +20,13 @@ import {
 } from "lucide-react"
 import { Dataset } from "@/types"
 
+// Generate avatar URL using a placeholder service
+const getAvatarUrl = (name: string) => {
+  // Using DiceBear API for consistent, professional-looking avatars
+  const seed = encodeURIComponent(name.toLowerCase().replace(/\s+/g, ''))
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`
+}
+
 // Extensible component sections for future enhancements
 interface OverviewSection {
   id: string
@@ -34,7 +42,14 @@ interface DatasetOverviewProps {
 }
 
 export function DatasetOverview({ dataset }: DatasetOverviewProps) {
-  const metrics = dataset.metrics
+  const metrics = dataset.metrics || {
+    qualityScore: 0,
+    completeness: 0,
+    accuracy: 0,
+    timeliness: 0,
+    usageCount: 0,
+    averageRating: 0
+  }
 
   // Calculate overall health score
   const healthScore = Math.round(
@@ -59,6 +74,12 @@ export function DatasetOverview({ dataset }: DatasetOverviewProps) {
     if (score >= 90) return "bg-green-500"
     if (score >= 70) return "bg-yellow-500"
     return "bg-red-500"
+  }
+
+  // Generate random avatar URL for users
+  const getAvatarUrl = (name: string) => {
+    const seed = name?.toLowerCase().replace(/\s+/g, '') || 'default'
+    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`
   }
 
   return (
@@ -133,71 +154,78 @@ export function DatasetOverview({ dataset }: DatasetOverviewProps) {
         </CardContent>
       </Card>
 
-      {/* Quality Metrics */}
+      {/* Quality Metrics - Horizontal Progress Bars */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Data Quality Metrics</CardTitle>
           <BarChart3 className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Quality Score */}
+        <CardContent className="space-y-6">
+          {/* Overall Quality */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span>Quality Score</span>
-              <span className="font-medium">{metrics.qualityScore}%</span>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Overall Quality</span>
+              <span className="text-sm font-semibold">{healthScore}%</span>
             </div>
-            <Progress 
-              value={metrics.qualityScore} 
-              className="h-2"
-              style={{
-                background: `linear-gradient(to right, ${getProgressColor(metrics.qualityScore)} 0%, ${getProgressColor(metrics.qualityScore)} ${metrics.qualityScore}%, #e5e7eb ${metrics.qualityScore}%)`
-              }}
-            />
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className={`h-2 rounded-full transition-all duration-1000 ease-out ${
+                  healthScore >= 90 ? 'bg-orange-500' : healthScore >= 70 ? 'bg-orange-400' : 'bg-orange-300'
+                }`}
+                style={{ width: `${healthScore}%` }}
+              ></div>
+            </div>
           </div>
 
-          {/* Completeness */}
+          {/* Quality Score */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span>Completeness</span>
-              <span className="font-medium">{metrics.completeness}%</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Info className="h-3 w-3 text-muted-foreground" />
+                <span className="text-sm font-medium">Quality Score</span>
+              </div>
+              <span className="text-sm font-semibold">{metrics.qualityScore}%</span>
             </div>
-            <Progress 
-              value={metrics.completeness} 
-              className="h-2"
-              style={{
-                background: `linear-gradient(to right, ${getProgressColor(metrics.completeness)} 0%, ${getProgressColor(metrics.completeness)} ${metrics.completeness}%, #e5e7eb ${metrics.completeness}%)`
-              }}
-            />
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="h-2 rounded-full bg-purple-500 transition-all duration-1000 ease-out"
+                style={{ width: `${metrics.qualityScore}%` }}
+              ></div>
+            </div>
           </div>
 
           {/* Accuracy */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span>Accuracy</span>
-              <span className="font-medium">{metrics.accuracy}%</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Info className="h-3 w-3 text-muted-foreground" />
+                <span className="text-sm font-medium">Accuracy</span>
+              </div>
+              <span className="text-sm font-semibold">{metrics.accuracy}%</span>
             </div>
-            <Progress 
-              value={metrics.accuracy} 
-              className="h-2"
-              style={{
-                background: `linear-gradient(to right, ${getProgressColor(metrics.accuracy)} 0%, ${getProgressColor(metrics.accuracy)} ${metrics.accuracy}%, #e5e7eb ${metrics.accuracy}%)`
-              }}
-            />
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="h-2 rounded-full bg-blue-500 transition-all duration-1000 ease-out"
+                style={{ width: `${metrics.accuracy}%` }}
+              ></div>
+            </div>
           </div>
 
           {/* Timeliness */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span>Timeliness</span>
-              <span className="font-medium">{metrics.timeliness}%</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Info className="h-3 w-3 text-muted-foreground" />
+                <span className="text-sm font-medium">Timeliness</span>
+              </div>
+              <span className="text-sm font-semibold">{metrics.timeliness}%</span>
             </div>
-            <Progress 
-              value={metrics.timeliness} 
-              className="h-2"
-              style={{
-                background: `linear-gradient(to right, ${getProgressColor(metrics.timeliness)} 0%, ${getProgressColor(metrics.timeliness)} ${metrics.timeliness}%, #e5e7eb ${metrics.timeliness}%)`
-              }}
-            />
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="h-2 rounded-full bg-green-500 transition-all duration-1000 ease-out"
+                style={{ width: `${metrics.timeliness}%` }}
+              ></div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -247,7 +275,7 @@ export function DatasetOverview({ dataset }: DatasetOverviewProps) {
               <Database className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Data Elements</span>
             </div>
-            <span className="text-lg font-semibold">{formatNumber(dataset.numberOfDataElements)}</span>
+            <span className="text-lg font-semibold">{formatNumber(dataset.numberOfDataElements || 0)}</span>
           </div>
 
           {/* Last Updated */}
@@ -257,7 +285,7 @@ export function DatasetOverview({ dataset }: DatasetOverviewProps) {
               <span className="text-sm">Last Updated</span>
             </div>
             <span className="text-sm text-muted-foreground">
-              {new Date(dataset.updatedAt).toLocaleDateString()}
+              {dataset.updatedAt ? new Date(dataset.updatedAt).toLocaleDateString() : 'Unknown'}
             </span>
           </div>
         </CardContent>
@@ -314,28 +342,48 @@ export function DatasetOverview({ dataset }: DatasetOverviewProps) {
             <div className="space-y-4">
               <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Ownership</h4>
               
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium">Data Owner</label>
-                  <div className="flex items-center space-x-2">
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">{dataset.dataOwner.name}</p>
+                  <label className="text-sm font-medium mb-2 block">Data Owner</label>
+                  <div className="flex items-center space-x-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage 
+                        src={getAvatarUrl(dataset.dataOwner?.name || 'Unknown')} 
+                        alt={dataset.dataOwner?.name || 'Unknown'} 
+                      />
+                      <AvatarFallback className="bg-blue-100 text-blue-600">
+                        {(dataset.dataOwner?.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-sm font-medium">{dataset.dataOwner?.name || 'Unknown'}</p>
+                      {dataset.dataOwner?.department && (
+                        <p className="text-xs text-muted-foreground">{dataset.dataOwner.department}</p>
+                      )}
+                    </div>
                   </div>
-                  {dataset.dataOwner.department && (
-                    <p className="text-xs text-muted-foreground ml-6">{dataset.dataOwner.department}</p>
-                  )}
                 </div>
                 
                 {dataset.dataSteward && (
                   <div>
-                    <label className="text-sm font-medium">Data Steward</label>
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm text-muted-foreground">{dataset.dataSteward.name}</p>
+                    <label className="text-sm font-medium mb-2 block">Data Steward</label>
+                    <div className="flex items-center space-x-3">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage 
+                          src={getAvatarUrl(dataset.dataSteward?.name || 'Unknown')} 
+                          alt={dataset.dataSteward?.name || 'Unknown'} 
+                        />
+                        <AvatarFallback className="bg-green-100 text-green-600">
+                          {(dataset.dataSteward?.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-sm font-medium">{dataset.dataSteward?.name || 'Unknown'}</p>
+                        {dataset.dataSteward?.department && (
+                          <p className="text-xs text-muted-foreground">{dataset.dataSteward.department}</p>
+                        )}
+                      </div>
                     </div>
-                    {dataset.dataSteward.department && (
-                      <p className="text-xs text-muted-foreground ml-6">{dataset.dataSteward.department}</p>
-                    )}
                   </div>
                 )}
               </div>
@@ -359,7 +407,7 @@ export function DatasetOverview({ dataset }: DatasetOverviewProps) {
                 <div>
                   <label className="text-sm font-medium">Created</label>
                   <p className="text-sm text-muted-foreground">
-                    {new Date(dataset.createdAt).toLocaleDateString()}
+                    {dataset.createdAt ? new Date(dataset.createdAt).toLocaleDateString() : 'Unknown'}
                   </p>
                 </div>
                 

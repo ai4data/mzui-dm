@@ -30,6 +30,13 @@ import {
 import { Dataset } from "@/types"
 import { formatDate, getClassificationColor } from "@/lib/dataTransforms"
 
+// Generate avatar URL using a placeholder service
+const getAvatarUrl = (name: string) => {
+  // Using DiceBear API for consistent, professional-looking avatars
+  const seed = encodeURIComponent(name.toLowerCase().replace(/\s+/g, ''))
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`
+}
+
 interface DatasetMetadataProps {
   dataset: Dataset
 }
@@ -59,8 +66,8 @@ export function DatasetMetadata({ dataset }: DatasetMetadataProps) {
                 </div>
                 <div className="flex items-center">
                   <Avatar className="h-6 w-6 mr-2">
-                    <AvatarImage src={dataset.dataOwner.email ? `https://avatar.vercel.sh/${dataset.dataOwner.email}` : undefined} />
-                    <AvatarFallback className="text-xs">
+                    <AvatarImage src={getAvatarUrl(dataset.dataOwner.name)} />
+                    <AvatarFallback className="text-xs bg-blue-100 text-blue-600">
                       {dataset.dataOwner.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
@@ -81,8 +88,8 @@ export function DatasetMetadata({ dataset }: DatasetMetadataProps) {
                 </div>
                 <div className="flex items-center">
                   <Avatar className="h-6 w-6 mr-2">
-                    <AvatarImage src={dataset.dataSteward.email ? `https://avatar.vercel.sh/${dataset.dataSteward.email}` : undefined} />
-                    <AvatarFallback className="text-xs">
+                    <AvatarImage src={getAvatarUrl(dataset.dataSteward.name)} />
+                    <AvatarFallback className="text-xs bg-green-100 text-green-600">
                       {dataset.dataSteward.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
@@ -101,7 +108,15 @@ export function DatasetMetadata({ dataset }: DatasetMetadataProps) {
                   <User className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">Data Expert</span>
                 </div>
-                <span className="text-sm font-medium">{dataset.dataExpert}</span>
+                <div className="flex items-center">
+                  <Avatar className="h-6 w-6 mr-2">
+                    <AvatarImage src={getAvatarUrl(dataset.dataExpert)} />
+                    <AvatarFallback className="text-xs bg-purple-100 text-purple-600">
+                      {dataset.dataExpert.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium">{dataset.dataExpert}</span>
+                </div>
               </div>
 
               {/* Data Validator */}
@@ -110,7 +125,15 @@ export function DatasetMetadata({ dataset }: DatasetMetadataProps) {
                   <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">Data Validator</span>
                 </div>
-                <span className="text-sm font-medium">{dataset.dataValidator}</span>
+                <div className="flex items-center">
+                  <Avatar className="h-6 w-6 mr-2">
+                    <AvatarImage src={getAvatarUrl(dataset.dataValidator)} />
+                    <AvatarFallback className="text-xs bg-amber-100 text-amber-600">
+                      {dataset.dataValidator.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium">{dataset.dataValidator}</span>
+                </div>
               </div>
 
               {/* Business Line */}
@@ -201,7 +224,7 @@ export function DatasetMetadata({ dataset }: DatasetMetadataProps) {
                   <Database className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">Data Elements</span>
                 </div>
-                <span className="text-sm font-medium">{dataset.numberOfDataElements.toLocaleString()}</span>
+                <span className="text-sm font-medium">{dataset.numberOfDataElements?.toLocaleString() || '0'}</span>
               </div>
 
               {/* Historical Data */}
